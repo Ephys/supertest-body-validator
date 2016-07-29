@@ -1,0 +1,39 @@
+{
+  "name": "supertest-body-validator",
+  "version": "1.0.0",
+  "description": "Allows the use of custom validators when validating JSON responses",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "eslint lib/**/*.js test/**/*.js && mocha --require should --reporter spec --check-leaks"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ephys/supertest-body-validator.git"
+  },
+  "keywords": [
+    "supertest",
+    "superagent",
+    "rest",
+    "json",
+    "validator"
+  ],
+  "author": "Guylian Cox <guyliancox@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Ephys/supertest-body-validator/issues"
+  },
+  "homepage": "https://github.com/Ephys/supertest-body-validator#readme",
+  "devDependencies": {
+    "eslint": "^2.9.0",
+    "eslint-config-airbnb": "^9.0.1",
+    "express": "latest",
+    "mocha": "^2.5.3",
+    "should": "^10.0.0"
+  },
+  "peerDependencies": {
+    "supertest": "1.x"
+  }
+}
