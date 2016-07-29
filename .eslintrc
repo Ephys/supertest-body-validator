@@ -5,6 +5,7 @@
     "padded-blocks": ["off"],
     "no-use-before-define": ["error", { "functions": false, "classes": true }],
     "no-underscore-dangle": ["off"],
-    "max-len": ["warn", 120]
+    "max-len": ["warn", 120],
+    "no-confusing-arrow": ["off"]
   }
 }

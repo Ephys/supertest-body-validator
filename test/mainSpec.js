@@ -15,19 +15,26 @@ describe('body-validator', () => {
 
   app.set('json spaces', 0);
   app.get('/', (req, res) => {
-    res.send({ foo: (new Date()).toString() });
+    res.send({
+      foo: 'John'
+    });
   });
 
   it('should allow functions when asserting the parsed response body', done => {
     request(app)
       .get('/')
-      .expect({ foo: () => false })
+      .expect({
+        foo: val => Number.isNaN(Date.parse(val)) ? '<Date>' : true
+      })
       .end(err => {
         should.exist(err);
+        should(err.message).equal("{ foo: 'John' } deepEqual { foo: '<Date>' }");
 
         request(app)
           .get('/')
-          .expect({ foo: val => !Number.isNaN(Date.parse(val)) })
+          .expect({
+            foo: val => typeof val !== 'string' ? '<string>' : true
+          })
           .end(done);
       });
   });

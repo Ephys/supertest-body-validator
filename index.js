@@ -31,27 +31,10 @@ function newExpect(expected, done, c) {
     this.end(done);
   }
 
-  this._asserts.push(res => {
-    try {
-      assert.deepEqual(res.body, expected);
-    } catch (err) {
-      const a = util.inspect(expected);
-      const b = util.inspect(res.body);
-      return error(`expected ${a} response body, got ${b}`, expected, res.body);
-    }
-  });
-
+  this._asserts.push(res => assert.deepCompare(res.body, expected));
   return this;
 }
 
 function isHandled(expected) {
   return typeof expected === 'object' && !(expected instanceof RegExp);
-}
-
-function error(msg, expected, actual) {
-  const err = new Error(msg);
-  err.expected = expected;
-  err.actual = actual;
-  err.showDiff = true;
-  return err;
 }

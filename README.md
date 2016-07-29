@@ -33,8 +33,14 @@ request(app)
   .send({
     username: 'ephys'
   }).expect({
-    id: val => Number.isNumber(id), // verifies that id is a number
-    creationDate: val => !Number.isNaN(Date.parse(val)),
+    // verifies that id is a number. Returning a string will use the string to tell the developer what the output should have been
+    id: val => Number.isInteger(id) ? true : '*integer*',
+    creationDate: val => !Number.isNaN(Date.parse(val)) ? true : '*Date*',
     username: 'ephys'
   })
 ```
+
+## Troubleshooting
+
+If you're seeing bugs when using `.expect`, try naming the function differently and see if it works then. 
+Something else might be conflicting with the surcharge.
