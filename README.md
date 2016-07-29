@@ -20,14 +20,14 @@ supercharge(); // surcharges supertest's .expect method.
 If you do not want to surcharge the existing `.expect` method, you can pass a name to `supercharge()` to define a new
 method.
 
-```
+```javascript
 supercharge('validateJson') // will add the method .validateJson
 supercharge(Symbol('expect')); // Symbols also work.
 ```
 
 ## Usage example
 
-```
+```javascript
 request(app)
   .post('/user')
   .send({
