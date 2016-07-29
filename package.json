@@ -1,6 +1,6 @@
 {
   "name": "supertest-body-validator",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Allows the use of custom validators when validating JSON responses",
   "main": "index.js",
   "directories": {

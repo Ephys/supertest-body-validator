@@ -31,7 +31,7 @@ function newExpect(expected, done, c) {
     this.end(done);
   }
 
-  this._asserts.push(res => assert.deepCompare(res.body, expected));
+  this._asserts.push(res => assert.deepCompare(res.body, expected, 'Received data does not match expectations'));
   return this;
 }
 

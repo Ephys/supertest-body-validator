@@ -20,6 +20,17 @@ describe('body-validator', () => {
     });
   });
 
+  app.get('/test2', (req, res) => {
+    res.send({
+      email: 'hello@net.com',
+      avatar: null,
+      roles: ['admin', 'user'],
+      createdAt: (new Date()).toString(),
+      id: 457,
+      token: 'nice token you have here',
+    });
+  });
+
   it('should allow functions when asserting the parsed response body', done => {
     request(app)
       .get('/')
@@ -28,7 +39,7 @@ describe('body-validator', () => {
       })
       .end(err => {
         should.exist(err);
-        should(err.message).equal("{ foo: 'John' } deepEqual { foo: '<Date>' }");
+        should(err.expected).deepEqual({ foo: '<Date>' });
 
         request(app)
           .get('/')
@@ -37,6 +48,20 @@ describe('body-validator', () => {
           })
           .end(done);
       });
+  });
+
+  it('should not crash when there are complex values to check', done => {
+    request(app)
+      .get('/test2')
+      .expect({
+        email: 'hello@net.com',
+        avatar: null,
+        roles: ['admin', 'user'],
+        createdAt: val => !Number.isNaN(Date.parse(val)) ? true : '<Date>',
+        id: val => Number.isInteger(val) ? true : '<Integer>',
+        token: val => typeof val === 'string' ? true : '<String>',
+      })
+      .end(done);
   });
 
   it('allows using a different name instead of surcharging', done => {
