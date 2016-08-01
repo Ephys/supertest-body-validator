@@ -44,6 +44,12 @@ describe('body-validator', () => {
     });
   });
 
+  app.get('/test4', (req, res) => {
+    res.send({
+      roles: ['admin', 'user']
+    });
+  });
+
   it('should allow functions when asserting the parsed response body', done => {
     request(app)
       .get('/')
@@ -97,6 +103,20 @@ describe('body-validator', () => {
         should(data.token).equal('<fail string>');
 
         done();
+      });
+  });
+
+  it('does not care about array ordering', done => {
+    request(app)
+      .get('/test4')
+      .expect({ roles: ['user', 'admin'] })
+      .end(err => {
+        should.not.exist(err);
+
+        request(app)
+          .get('/test4')
+          .expect({ roles: ['admin', 'user'] })
+          .end(done);
       });
   });
 
