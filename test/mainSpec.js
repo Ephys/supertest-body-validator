@@ -31,6 +31,19 @@ describe('body-validator', () => {
     });
   });
 
+  app.get('/test3', (req, res) => {
+    res.send({
+      data: {
+        email: 'hello@net.com',
+        avatar: null,
+        roles: ['admin', 'user'],
+        createdAt: (new Date()).toString(),
+        id: 457,
+        token: 'nice token you have here'
+      }
+    });
+  });
+
   it('should allow functions when asserting the parsed response body', done => {
     request(app)
       .get('/')
@@ -62,6 +75,29 @@ describe('body-validator', () => {
         token: val => typeof val === 'string' ? true : '<String>',
       })
       .end(done);
+  });
+
+  it('should display validator messages correctly', done => {
+    request(app)
+      .get('/test3')
+      .expect({
+        data: {
+          email: 'hello@net.com',
+          avatar: null,
+          roles: ['admin', 'user'],
+          createdAt: () => '<fail date>',
+          id: () => '<fail int>',
+          token: () => '<fail string>',
+        }
+      })
+      .end(err => {
+        const data = err.expected.data;
+        should(data.createdAt).equal('<fail date>');
+        should(data.id).equal('<fail int>');
+        should(data.token).equal('<fail string>');
+
+        done();
+      });
   });
 
   it('allows using a different name instead of surcharging', done => {
