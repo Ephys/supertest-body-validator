@@ -50,6 +50,21 @@ describe('body-validator', () => {
     });
   });
 
+  app.get('/test5', (req, res) => {
+    res.send({
+      data: [{
+        message: {
+          body: 'hello 1',
+          to: 1,
+          from: 2
+        },
+        contact: {
+          id: 1
+        }
+      }]
+    });
+  });
+
   it('should allow functions when asserting the parsed response body', done => {
     request(app)
       .get('/')
@@ -116,6 +131,36 @@ describe('body-validator', () => {
         request(app)
           .get('/test4')
           .expect({ roles: ['admin', 'user'] })
+          .end(done);
+      });
+  });
+
+  it('does care about array contents', done => {
+    request(app)
+      .get('/test5')
+      .expect({
+        data: [{
+          message: {},
+          contact: {}
+        }]
+      })
+      .end(err => {
+        should.exist(err);
+
+        request(app)
+          .get('/test5')
+          .expect({
+            data: [{
+              message: {
+                body: 'hello 1',
+                to: 1,
+                from: 2
+              },
+              contact: {
+                id: 1
+              }
+            }]
+          })
           .end(done);
       });
   });
